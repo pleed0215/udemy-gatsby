@@ -1,12 +1,16 @@
 import * as React from 'react';
-import Header from './header';
+import AppHeader from './header';
+import Footer from './footer';
 
 const Layout: React.FC = ({ children }) => {
     return (
-        <main>
-            <Header />
-            {children}
-        </main>
+        <>
+            <main className={"container is-max-desktop"}>
+                <AppHeader seo={''}/>
+                {children}
+            </main>
+            <Footer />
+        </>
     );
 };
 export default Layout;

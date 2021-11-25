@@ -16,10 +16,13 @@
   },
   "dependencies": {
     "axios": "^0.21.4",
+    "bulma": "^0.9.3",
     "gatsby": "^4.2.0",
     "gatsby-plugin-sass": "^5.2.0",
+    "gatsby-remark-prismjs": "^6.2.0",
     "gatsby-source-filesystem": "^4.2.0",
     "gatsby-transformer-remark": "^5.2.0",
+    "prismjs": "^1.25.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "sass": "^1.43.4",

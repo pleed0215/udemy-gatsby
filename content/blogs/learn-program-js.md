@@ -2,6 +2,8 @@
 title: Learn program in javascript
 subtitle: Fuck you what are you looking
 date: 2021-11-21
+author: Fucking guy
+rating: 2.9
 ---
 
 # h1 Heading 8-)

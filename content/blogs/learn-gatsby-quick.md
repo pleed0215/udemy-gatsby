@@ -2,6 +2,7 @@
 title: Learn Gatsby quickly. 
 subtitle: His pronounce is sucks. 
 date: 2021-11-21
+rating: 5
 ---
 
 # h1 Heading 8-)

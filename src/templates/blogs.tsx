@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Layout from '../components/layout';
-import { graphql, useStaticQuery, PageProps } from 'gatsby';
+import { graphql, PageProps } from 'gatsby';
+import "../styles/blog.scss"
 
 type MarkdownType = {
     markdownRemark: {
@@ -25,6 +26,7 @@ const BlogTemplate: React.FC<PageProps<MarkdownType, { slug: string }>> = ({
             </h1>
             <p>slug: {slug}</p>
             <div
+                className={"blog-content"}
                 dangerouslySetInnerHTML={{ __html: data.markdownRemark.html }}
             />
         </Layout>
