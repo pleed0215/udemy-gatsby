@@ -2,7 +2,11 @@ module.exports = {
     siteMetadata: {
         siteUrl: 'https://www.yourdomain.tld',
         title: 'udemy-gatsby',
+        context: {
+            siteData: "fuck you"
+        }
     },
+
     plugins: [
         {
             resolve: `gatsby-plugin-typescript`,
