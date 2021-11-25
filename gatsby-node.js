@@ -1,68 +1,65 @@
-const axios = require('axios')
+const axios = require('axios');
 exports.createPages = async ({ actions: { createPage } }) => {
     const res = await axios.get('https://jsonplaceholder.typicode.com/posts');
     const posts = res.data;
 
-    posts.forEach( post => createPage({
+    posts.forEach(post => createPage({
         path: `/posts/${post.id}`,
         component: require.resolve('./src/templates/post.tsx'),
-        context: { post }
+        context: { post },
     }));
 
     createPage({
         path: '/posts',
         component: require.resolve('./src/templates/posts.tsx'),
         context: { posts },
-    })
+    });
 };
 
-exports.createSchemaCustomization = ({actions}) => {
-    const {createTypes} = actions;
+exports.createSchemaCustomization = ({ actions }) => {
+    const { createTypes } = actions;
     const typeDefs = `
         type PostJson {
             id: ID!
             title: String!
             body: String!
-            isActive: Boolean!
-            wordCount: Int,
-            tags: [String!]!
-            content: Content
         }
-        type Content {
-            text: String!
-            title: String!
+        
+        input TitleFilter {
+            eq: String
+            in: String
         }
+        
     `;
     createTypes(typeDefs);
-}
-exports.createResolvers = ({createResolvers}) => {
+};
+exports.createResolvers = ({ createResolvers }) => {
     const resolvers = {
         Query: {
             allPost: {
-                type: ["PostJson"],
-                resolve() {
-                    console.log("Hitting the query!");
-                    return [{
-                        id: 101,
-                        title: "Hello, world",
-                        body: "My custom text",
-                        isActive: true,
-                        wordCount: 100,
-                        tags: ["fuck"],
-                        content: {
-                            text: "This is content text",
-                            title: "This is content title",
+                type: ['PostJson'],
+                args: {
+                    filter: `input PostFilterInput { title: TitleFilter }`,
+                    limit: 'Int',
+                },
+                async resolve(source, args, context, info) {
+                    const { filter } = args;
+                    const {data} = await axios.get('https://jsonplaceholder.typicode.com/posts');
+
+                    if (filter) {
+                        if(filter.title) {
+                            if(filter.title.eq) {
+                                return data.filter( d => d.title === filter.title.eq);
+                            }else if(filter.title.in) {
+                                return data.filter( d => d.title.includes(filter.title.in));
+                            }
                         }
-                    }, {
-                        id: 102,
-                        title: "Hello world 2",
-                        body: "My custom text2",
-                        isActive: false,
-                        tags: []
-                    }]
-                }
-            }
-        }
-    }
+
+                    }
+                    return data;
+                },
+            },
+        },
+    };
     createResolvers(resolvers);
-}
+};
