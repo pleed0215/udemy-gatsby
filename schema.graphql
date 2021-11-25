@@ -299,16 +299,51 @@ type PageInfo {
     totalCount: Int!
 }
 
-type PostJson {
-    body: String!
+type Post implements Node {
+    body: String
+    children: [Node!]!
     id: ID!
-    title: String!
+    internal: Internal!
+    parent: Node
+    title: String
+}
+
+type PostConnection {
+    distinct(field: PostFieldsEnum!): [String!]!
+    edges: [PostEdge!]!
+    group(field: PostFieldsEnum!, limit: Int, skip: Int): [PostGroupConnection!]!
+    max(field: PostFieldsEnum!): Float
+    min(field: PostFieldsEnum!): Float
+    nodes: [Post!]!
+    pageInfo: PageInfo!
+    sum(field: PostFieldsEnum!): Float
+    totalCount: Int!
+}
+
+type PostEdge {
+    next: Post
+    node: Post!
+    previous: Post
+}
+
+type PostGroupConnection {
+    distinct(field: PostFieldsEnum!): [String!]!
+    edges: [PostEdge!]!
+    field: String!
+    fieldValue: String
+    group(field: PostFieldsEnum!, limit: Int, skip: Int): [PostGroupConnection!]!
+    max(field: PostFieldsEnum!): Float
+    min(field: PostFieldsEnum!): Float
+    nodes: [Post!]!
+    pageInfo: PageInfo!
+    sum(field: PostFieldsEnum!): Float
+    totalCount: Int!
 }
 
 type Query {
     allDirectory(filter: DirectoryFilterInput, limit: Int, skip: Int, sort: DirectorySortInput): DirectoryConnection!
     allFile(filter: FileFilterInput, limit: Int, skip: Int, sort: FileSortInput): FileConnection!
-    allPost(filter: PostFilterInput, limit: Int): [PostJson]
+    allPost(filter: PostFilterInput, limit: Int, skip: Int, sort: PostSortInput): PostConnection!
     allSite(filter: SiteFilterInput, limit: Int, skip: Int, sort: SiteSortInput): SiteConnection!
     allSiteBuildMetadata(filter: SiteBuildMetadataFilterInput, limit: Int, skip: Int, sort: SiteBuildMetadataSortInput): SiteBuildMetadataConnection!
     allSiteFunction(filter: SiteFunctionFilterInput, limit: Int, skip: Int, sort: SiteFunctionSortInput): SiteFunctionConnection!
@@ -316,6 +351,7 @@ type Query {
     allSitePlugin(filter: SitePluginFilterInput, limit: Int, skip: Int, sort: SitePluginSortInput): SitePluginConnection!
     directory(absolutePath: StringQueryOperatorInput, accessTime: DateQueryOperatorInput, atime: DateQueryOperatorInput, atimeMs: FloatQueryOperatorInput, base: StringQueryOperatorInput, birthTime: DateQueryOperatorInput, birthtime: DateQueryOperatorInput, birthtimeMs: FloatQueryOperatorInput, changeTime: DateQueryOperatorInput, children: NodeFilterListInput, ctime: DateQueryOperatorInput, ctimeMs: FloatQueryOperatorInput, dev: IntQueryOperatorInput, dir: StringQueryOperatorInput, ext: StringQueryOperatorInput, extension: StringQueryOperatorInput, gid: IntQueryOperatorInput, id: StringQueryOperatorInput, ino: FloatQueryOperatorInput, internal: InternalFilterInput, mode: IntQueryOperatorInput, modifiedTime: DateQueryOperatorInput, mtime: DateQueryOperatorInput, mtimeMs: FloatQueryOperatorInput, name: StringQueryOperatorInput, nlink: IntQueryOperatorInput, parent: NodeFilterInput, prettySize: StringQueryOperatorInput, rdev: IntQueryOperatorInput, relativeDirectory: StringQueryOperatorInput, relativePath: StringQueryOperatorInput, root: StringQueryOperatorInput, size: IntQueryOperatorInput, sourceInstanceName: StringQueryOperatorInput, uid: IntQueryOperatorInput): Directory
     file(absolutePath: StringQueryOperatorInput, accessTime: DateQueryOperatorInput, atime: DateQueryOperatorInput, atimeMs: FloatQueryOperatorInput, base: StringQueryOperatorInput, birthTime: DateQueryOperatorInput, birthtime: DateQueryOperatorInput, birthtimeMs: FloatQueryOperatorInput, changeTime: DateQueryOperatorInput, children: NodeFilterListInput, ctime: DateQueryOperatorInput, ctimeMs: FloatQueryOperatorInput, dev: IntQueryOperatorInput, dir: StringQueryOperatorInput, ext: StringQueryOperatorInput, extension: StringQueryOperatorInput, gid: IntQueryOperatorInput, id: StringQueryOperatorInput, ino: FloatQueryOperatorInput, internal: InternalFilterInput, mode: IntQueryOperatorInput, modifiedTime: DateQueryOperatorInput, mtime: DateQueryOperatorInput, mtimeMs: FloatQueryOperatorInput, name: StringQueryOperatorInput, nlink: IntQueryOperatorInput, parent: NodeFilterInput, prettySize: StringQueryOperatorInput, rdev: IntQueryOperatorInput, relativeDirectory: StringQueryOperatorInput, relativePath: StringQueryOperatorInput, root: StringQueryOperatorInput, size: IntQueryOperatorInput, sourceInstanceName: StringQueryOperatorInput, uid: IntQueryOperatorInput): File
+    post(body: StringQueryOperatorInput, children: NodeFilterListInput, id: StringQueryOperatorInput, internal: InternalFilterInput, parent: NodeFilterInput, title: StringQueryOperatorInput): Post
     site(buildTime: DateQueryOperatorInput, children: NodeFilterListInput, host: StringQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, jsxRuntime: StringQueryOperatorInput, parent: NodeFilterInput, pathPrefix: StringQueryOperatorInput, polyfill: BooleanQueryOperatorInput, port: IntQueryOperatorInput, siteMetadata: SiteSiteMetadataFilterInput): Site
     siteBuildMetadata(buildTime: DateQueryOperatorInput, children: NodeFilterListInput, id: StringQueryOperatorInput, internal: InternalFilterInput, parent: NodeFilterInput): SiteBuildMetadata
     siteFunction(absoluteCompiledFilePath: StringQueryOperatorInput, children: NodeFilterListInput, functionRoute: StringQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, matchPath: StringQueryOperatorInput, originalAbsoluteFilePath: StringQueryOperatorInput, originalRelativeFilePath: StringQueryOperatorInput, parent: NodeFilterInput, pluginName: StringQueryOperatorInput, relativeCompiledFilePath: StringQueryOperatorInput): SiteFunction
@@ -816,6 +852,97 @@ enum FileFieldsEnum {
     size
     sourceInstanceName
     uid
+}
+
+enum PostFieldsEnum {
+    body
+    children
+    children___children
+    children___children___children
+    children___children___children___children
+    children___children___children___id
+    children___children___id
+    children___children___internal___content
+    children___children___internal___contentDigest
+    children___children___internal___description
+    children___children___internal___fieldOwners
+    children___children___internal___ignoreType
+    children___children___internal___mediaType
+    children___children___internal___owner
+    children___children___internal___type
+    children___children___parent___children
+    children___children___parent___id
+    children___id
+    children___internal___content
+    children___internal___contentDigest
+    children___internal___description
+    children___internal___fieldOwners
+    children___internal___ignoreType
+    children___internal___mediaType
+    children___internal___owner
+    children___internal___type
+    children___parent___children
+    children___parent___children___children
+    children___parent___children___id
+    children___parent___id
+    children___parent___internal___content
+    children___parent___internal___contentDigest
+    children___parent___internal___description
+    children___parent___internal___fieldOwners
+    children___parent___internal___ignoreType
+    children___parent___internal___mediaType
+    children___parent___internal___owner
+    children___parent___internal___type
+    children___parent___parent___children
+    children___parent___parent___id
+    id
+    internal___content
+    internal___contentDigest
+    internal___description
+    internal___fieldOwners
+    internal___ignoreType
+    internal___mediaType
+    internal___owner
+    internal___type
+    parent___children
+    parent___children___children
+    parent___children___children___children
+    parent___children___children___id
+    parent___children___id
+    parent___children___internal___content
+    parent___children___internal___contentDigest
+    parent___children___internal___description
+    parent___children___internal___fieldOwners
+    parent___children___internal___ignoreType
+    parent___children___internal___mediaType
+    parent___children___internal___owner
+    parent___children___internal___type
+    parent___children___parent___children
+    parent___children___parent___id
+    parent___id
+    parent___internal___content
+    parent___internal___contentDigest
+    parent___internal___description
+    parent___internal___fieldOwners
+    parent___internal___ignoreType
+    parent___internal___mediaType
+    parent___internal___owner
+    parent___internal___type
+    parent___parent___children
+    parent___parent___children___children
+    parent___parent___children___id
+    parent___parent___id
+    parent___parent___internal___content
+    parent___parent___internal___contentDigest
+    parent___parent___internal___description
+    parent___parent___internal___fieldOwners
+    parent___parent___internal___ignoreType
+    parent___parent___internal___mediaType
+    parent___parent___internal___owner
+    parent___parent___internal___type
+    parent___parent___parent___children
+    parent___parent___parent___id
+    title
 }
 
 enum SiteBuildMetadataFieldsEnum {
@@ -1506,7 +1633,17 @@ input NodeFilterListInput {
 }
 
 input PostFilterInput {
-    title: TitleFilter
+    body: StringQueryOperatorInput
+    children: NodeFilterListInput
+    id: StringQueryOperatorInput
+    internal: InternalFilterInput
+    parent: NodeFilterInput
+    title: StringQueryOperatorInput
+}
+
+input PostSortInput {
+    fields: [PostFieldsEnum]
+    order: [SortOrderEnum] = [ASC]
 }
 
 input SiteBuildMetadataFilterInput {
@@ -1618,11 +1755,6 @@ input StringQueryOperatorInput {
     ne: String
     nin: [String]
     regex: String
-}
-
-input TitleFilter {
-    eq: String
-    in: String
 }
 
 

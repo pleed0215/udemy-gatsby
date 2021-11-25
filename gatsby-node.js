@@ -16,50 +16,31 @@ exports.createPages = async ({ actions: { createPage } }) => {
     });
 };
 
-exports.createSchemaCustomization = ({ actions }) => {
-    const { createTypes } = actions;
-    const typeDefs = `
-        type PostJson {
-            id: ID!
-            title: String!
-            body: String!
-        }
-        
-        input TitleFilter {
-            eq: String
-            in: String
-        }
-        
-    `;
-    createTypes(typeDefs);
-};
-exports.createResolvers = ({ createResolvers }) => {
-    const resolvers = {
-        Query: {
-            allPost: {
-                type: ['PostJson'],
-                args: {
-                    filter: `input PostFilterInput { title: TitleFilter }`,
-                    limit: 'Int',
-                },
-                async resolve(source, args, context, info) {
-                    const { filter } = args;
-                    const {data} = await axios.get('https://jsonplaceholder.typicode.com/posts');
+exports.sourceNodes = async ({actions, createNodeId, createContentDigest}) => {
+    const res = await axios.get('https://jsonplaceholder.typicode.com/posts');
+    const posts = res.data;
 
-                    if (filter) {
-                        if(filter.title) {
-                            if(filter.title.eq) {
-                                return data.filter( d => d.title === filter.title.eq);
-                            }else if(filter.title.in) {
-                                return data.filter( d => d.title.includes(filter.title.in));
-                            }
-                        }
-
-                    }
-                    return data;
-                },
-            },
-        },
-    };
-    createResolvers(resolvers);
-};
+    posts.forEach(post => {
+        const node = {
+            title: post.title,
+            body: post.body,
+            // node id must be globally unique
+            id: createNodeId(`Post-${post.id}`),
+            // ID to the parent node.
+            parent: null,
+            // IDs to the children nodes.
+            children: [],
+            // internal field are not usually interesting for consumers
+            // but are very important for Gatsby Core.
+            internal: {
+                // globally unique node type
+                type: "Post",
+                // for hash or short digital summary of this node.
+                contentDigest: createContentDigest(post),
+                // content exposing raw content of this node.
+                content: JSON.stringify(post)
+            }
+        }
+        actions.createNode(node);
+    });
+}
