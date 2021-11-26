@@ -20,7 +20,7 @@ exports.createPages = async ({ graphql, actions: { createPage } }) => {
     } = result;
     nodes.forEach((node) => {
         createPage({
-            path: `/blogs${node.fields.slug}`,
+            path: `/blogs/${node.fields.slug}`,
             component: require.resolve('./src/templates/blogs.tsx'),
             context: {
                 slug: node.fields.slug,
@@ -28,7 +28,6 @@ exports.createPages = async ({ graphql, actions: { createPage } }) => {
         });
     });
 };
-
 
 exports.onCreateNode = ({
     node,
@@ -41,7 +40,7 @@ exports.onCreateNode = ({
         createNodeField({
             node,
             name: 'slug',
-            value: slug,
+            value: slug.replace(/\//g, ''),
         });
     }
 };
