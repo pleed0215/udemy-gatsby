@@ -1,1 +1,4 @@
 @import "~bulma/bulma";
+a[disabled] {
+  pointer-events: none;
+}

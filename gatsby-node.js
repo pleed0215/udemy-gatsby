@@ -18,6 +18,23 @@ exports.createPages = async ({ graphql, actions: { createPage } }) => {
             allMarkdownRemark: { nodes },
         },
     } = result;
+
+    const postsPerPage = 2;
+    const numPages = Math.ceil(nodes.length / postsPerPage);
+
+    Array.from({ length: numPages }).forEach((_, index) => {
+        createPage({
+            path: index === 0 ? `/blogs` : `/blogs/${index + 1}`,
+            component: require.resolve('./src/templates/blogs.paginated.tsx'),
+            context: {
+                limit: postsPerPage,
+                skip: index * postsPerPage,
+                numPages,
+                currentPage: index + 1,
+            },
+        });
+    });
+
     nodes.forEach((node) => {
         createPage({
             path: `/blogs/${node.fields.slug}`,
@@ -36,7 +53,6 @@ exports.onCreateNode = ({
 }) => {
     if (node.internal.type === 'MarkdownRemark') {
         const slug = createFilePath({ node, getNode, basePath: 'blogs' });
-        console.log(slug);
         createNodeField({
             node,
             name: 'slug',
