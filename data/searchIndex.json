@@ -1,0 +1,19 @@
+{
+  "blogs": [
+    {
+      "slug": "learn-program-js",
+      "title": "Learn program in javascript",
+      "subtitle": "Fuck you what are you looking"
+    },
+    {
+      "slug": "learn-gatsby-quick",
+      "title": "Learn Gatsby quickly.",
+      "subtitle": "His pronounce is sucks."
+    },
+    {
+      "slug": "js-design-pattern",
+      "title": "Javascript design pattern",
+      "subtitle": "Learn something new, design are still cool!"
+    }
+  ]
+}
