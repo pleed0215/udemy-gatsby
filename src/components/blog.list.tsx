@@ -1,7 +1,11 @@
 import * as React from 'react';
 import Blog from './blog';
 
-export default function BlogList({ blogs, search: SearchBox, searchIndex }) {
+export default function BlogList({
+    blogs,
+    search: SearchBox = null,
+    searchIndex = null,
+}) {
     return (
         <>
             {SearchBox && (

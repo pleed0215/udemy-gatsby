@@ -2,3 +2,10 @@
 a[disabled] {
   pointer-events: none;
 }
+
+@media screen and (max-width: 768px) {
+  .columns {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}

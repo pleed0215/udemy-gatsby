@@ -2,6 +2,7 @@ import * as React from 'react';
 import Layout from '../../components/layout';
 import { graphql, PageProps } from 'gatsby';
 import '../../styles/blog.scss';
+import SEO from '../../components/seo';
 
 type MarkdownType = {
     markdownRemark: {
@@ -9,6 +10,7 @@ type MarkdownType = {
         html: string;
         frontmatter: {
             title: string;
+            subtitle: string;
             date: string;
         };
     };
@@ -21,6 +23,10 @@ const BlogTemplate: React.FC<PageProps<MarkdownType, { slug: string }>> = ({
     console.log(data);
     return (
         <Layout>
+            <SEO
+                title={data.markdownRemark.frontmatter.title}
+                description={data.markdownRemark.frontmatter.subtitle}
+            />
             <h1>
                 {data.markdownRemark.frontmatter.title} -{' '}
                 <span>{data.markdownRemark.frontmatter.date}</span>
@@ -43,6 +49,7 @@ export const query = graphql`
             html
             frontmatter {
                 title
+                subtitle
                 date(formatString: "YYYY-MM-DD")
             }
         }

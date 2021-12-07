@@ -4,6 +4,7 @@ import Layout from '../components/layout';
 import FeaturedBlog from '../components/featured.blog';
 import BlogList from '../components/blog.list';
 import SearchContainer from '../components/search.container';
+import SEO from '../components/seo';
 
 type MarkdownResultType = {
     allMarkdownRemark: {
@@ -28,6 +29,7 @@ const MarkdownPage: React.FC<
 > = ({ data, pageContext: { searchIndex } }) => {
     return (
         <Layout>
+            <SEO title={'Home'} description={'Best forking site.'} />
             <div className={'columns'}>
                 {data.allMarkdownRemark.nodes.slice(0, 2).map((node) => (
                     <div className={'column'} key={node.id}>
@@ -42,6 +44,12 @@ const MarkdownPage: React.FC<
                     searchIndex={searchIndex}
                 />
             </div>
+            <Link
+                to={'/blogs'}
+                className={'button is-primary is-small is-outlined'}
+            >
+                Read more blogs...
+            </Link>
         </Layout>
     );
 };

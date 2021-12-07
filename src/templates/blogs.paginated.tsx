@@ -2,6 +2,7 @@ import * as React from 'react';
 import { PageProps, graphql, Link } from 'gatsby';
 import Layout from '../components/layout';
 import BlogList from '../components/blog.list';
+import SEO from '../components/seo';
 
 type MarkdownResultType = {
     allMarkdownRemark: {
@@ -36,6 +37,10 @@ const BlogsPaginatedPage: React.FC<PageProps<MarkdownResultType, PageContext>> =
             currentPage - 1 === 1 ? '' : (currentPage - 1).toString();
         return (
             <Layout>
+                <SEO
+                    title={'Hello this is what...'}
+                    description={'Description of what..?'}
+                />
                 <div className={'p-4'}>
                     <BlogList blogs={data.allMarkdownRemark.nodes} />
                 </div>
